@@ -1,0 +1,55 @@
+.markdown-edit{
+  padding: 0 10px;
+  .markdown-edit-actionbar{
+    margin: 10px 0;
+    .ant-upload-list{
+      display: none;
+    }
+    button {
+      margin-right: 5px;
+    }
+  }
+  .markdown-edit-view{
+    height: 370px;
+    overflow: auto;
+    p {
+      margin-bottom: 10px;
+    }
+    h1, h2, h3, h4, h5, h6{
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    img{
+      max-width: 100%;
+    }
+    ul{
+      list-style-type: disc;
+      padding-left: 40px;
+    }
+    ol{
+      list-style-type: decimal;
+      padding-left: 40px;
+    }
+    table {
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      th, td {
+        padding: 6px 8px;
+        border: 1px solid #e8e8e8;
+        white-space: normal;
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+      tr:nth-child(odd) {
+        background-color: #f5f5f5;
+      }
+    }
+    pre{
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
