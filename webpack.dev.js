@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const { resolve } = path;
 
@@ -11,7 +10,7 @@ module.exports = {
     index: './index.js',
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, './dist/'),
     filename: '[name].js',
     publicPath: '/',
   },
@@ -37,9 +36,9 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json'],
   },
   devServer: {
-    contentBase: resolve(__dirname, 'dist'),
+    contentBase: resolve(__dirname, './'),
     // 输出文件的路径
-    publicPath: '/',
+    publicPath: '/dist/',
     // 和上文 output 的“publicPath”值保持一致
   },
   externals: {
@@ -47,9 +46,9 @@ module.exports = {
     'react-dom': 'var ReactDOM',
   },
   devtool: 'inline-source-map',
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './index.html',
-    }),
-  ],
+  // plugins: [
+  //   new HtmlWebpackPlugin({
+  //     template: './index.html',
+  //   }),
+  // ],
 };

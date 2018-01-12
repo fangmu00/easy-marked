@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 const { resolve } = path;
@@ -12,7 +11,7 @@ module.exports = {
     index: './index.js',
   },
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, './dist/'),
     filename: '[name].js',
     publicPath: '/',
   },
@@ -45,9 +44,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
-    new HtmlWebpackPlugin({
-      template: './index.html',
     }),
     new ExtractTextPlugin('styles.css'),
   ],

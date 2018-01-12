@@ -99,7 +99,7 @@ class MarkdownEdit extends React.Component {
     this.view.scrollTop = (scrollTop / (scrollHeight - offsetHeight)) * (viewScrollHeight - viewHeight);
   }
 
-  selectionReplace(text) {
+  selectionReplace({ text, selectRange }) {
     const { value } = this.state;
     const { selectionStart, selectionEnd } = this.textareaRef;
     const v = value || '';
@@ -111,7 +111,7 @@ class MarkdownEdit extends React.Component {
     }, () => {
       this.renderView();
       this.textareaRef.focus();
-      this.textareaRef.setSelectionRange(selectionStart + text.length, selectionStart + text.length); // 设置光标位置
+      this.textareaRef.setSelectionRange(selectionStart + selectRange[0], selectionStart + selectRange[1]); // 设置光标位置
     });
     this.setHistory(backValue);
   }
@@ -159,7 +159,8 @@ class MarkdownEdit extends React.Component {
           onClick={() => {
             const { value } = this.state;
             const { selectionStart, selectionEnd } = this.textareaRef;
-            this.selectionReplace(cmd.link(value.substring(selectionStart, selectionEnd)));
+            const selectText = value.substring(selectionStart, selectionEnd);
+            this.selectionReplace(cmd.link(selectText));
           }}
         >
           插入链接
