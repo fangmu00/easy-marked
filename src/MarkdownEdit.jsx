@@ -1,18 +1,19 @@
 import React, { PropTypes } from 'react';
 import marked from 'marked';
-import { Input, Row, Col, Upload, Button, message, Icon } from 'antd';
+import { Input, Row, Col, Upload, Button, message, Icon, Dropdown, Menu } from 'antd';
 import { cmd, uploadRPC } from './const';
 import './style.less';
 
 const { TextArea } = Input;
+const ButtonGroup = Button.Group;
 
 class MarkdownEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      value: props.value,
       history: {
-        data: [''],
+        data: [props.value],
         currentIndex: 0,
       }, // 记录操作记录
     };
@@ -49,6 +50,12 @@ class MarkdownEdit extends React.Component {
     this.props.onChange(value);
   }
 
+  getSelectValue() {
+    const { value } = this.state;
+    const { selectionStart, selectionEnd } = this.textareaRef;
+    return value.substring(selectionStart, selectionEnd);
+  }
+
   prevHistory() {
     const { history } = this.state;
     if (history.currentIndex > 0) {
@@ -63,7 +70,7 @@ class MarkdownEdit extends React.Component {
 
   nextHistory() {
     const { history } = this.state;
-    if (history.currentIndex < history.data.length) {
+    if (history.currentIndex < history.data.length - 1) {
       history.currentIndex += 1;
       this.setState({
         value: history.data[history.currentIndex],
@@ -82,9 +89,13 @@ class MarkdownEdit extends React.Component {
 
   handleKeyDown(e) {
     const { keyCode, ctrlKey } = e;
+    console.log(keyCode);
     if (keyCode === 90 && ctrlKey) {
       e.preventDefault();
       this.prevHistory();
+    } if (keyCode === 89 && ctrlKey) {
+      e.preventDefault();
+      this.nextHistory();
     } else if (keyCode === 9) {
       e.preventDefault();
       this.selectionReplace(cmd.tab);
@@ -139,55 +150,121 @@ class MarkdownEdit extends React.Component {
         }
       },
     };
+    const menu = (
+      <Menu onClick={(e) => {
+          switch (e.key) {
+            case '1':
+            this.selectionReplace(cmd.h1());
+            break;
+            case '2':
+            this.selectionReplace(cmd.h2());
+            break;
+            case '3':
+            this.selectionReplace(cmd.h3());
+            break;
+            default:
+            {
+              this.selectionReplace(cmd.h1());
+              break;
+            }
+          }
+        }}
+      >
+        <Menu.Item key="1">h1 大标题</Menu.Item>
+        <Menu.Item key="2">h2 中标题</Menu.Item>
+        <Menu.Item key="3">h3 小标题</Menu.Item>
+      </Menu>
+    );
     return (
       <div className="markdown-edit-actionbar">
-        <Button
-          onClick={() => {
-            this.selectionReplace(cmd.code);
-          }}
-        >
-          插入代码
-        </Button>
-        <Button
-          onClick={() => {
-            this.selectionReplace(cmd.table);
-          }}
-        >
-          插入表格
-        </Button>
-        <Button
-          onClick={() => {
-            const { value } = this.state;
-            const { selectionStart, selectionEnd } = this.textareaRef;
-            const selectText = value.substring(selectionStart, selectionEnd);
-            this.selectionReplace(cmd.link(selectText));
-          }}
-        >
-          插入链接
-        </Button>
-        <Upload {...props}>
-          <Button>
-            上传图片
+        <ButtonGroup>
+          <Dropdown overlay={menu}>
+            <Button>
+              h1  <Icon type="down" />
+            </Button>
+          </Dropdown>
+          <Button
+            title="粗体"
+            onClick={() => {
+              this.selectionReplace(cmd.bold(this.getSelectValue()));
+            }}
+          >
+            B
           </Button>
-        </Upload>
-        <Button
-          onClick={() => {
-            this.prevHistory();
-          }}
-          disabled={history.currentIndex === 0}
-        >
-          <Icon type="arrow-left" />
-        </Button>
-        <Button
-          onClick={() => {
-            this.nextHistory();
-          }}
-          disabled={history.currentIndex === history.data.length - 1}
-        >
-          <Icon type="arrow-right" />
-        </Button>
+          <Button
+            title="斜体"
+            onClick={() => {
+              this.selectionReplace(cmd.italic(this.getSelectValue()));
+            }}
+          >
+            <span className="italic">I</span>
+          </Button>
+          <Button
+            title="删除线"
+            onClick={() => {
+              this.selectionReplace(cmd.deleteline(this.getSelectValue()));
+            }}
+          >
+            <span className="deleteline">S</span>
+          </Button>
+          <Button
+            title="无序列"
+            onClick={() => {
+              this.selectionReplace(cmd.ulist());
+            }}
+          >
+            <span className="markdown-edit-i ulist" />
+          </Button>
+          <Button
+            title="有序列"
+            onClick={() => {
+              this.selectionReplace(cmd.olist());
+            }}
+          >
+            <span className="markdown-edit-i olist" />
+          </Button>
+          <Button
+            title="插入代码"
+            onClick={() => {
+              this.selectionReplace(cmd.code);
+            }}
+            icon="code-o"
+          />
+          <Button
+            title="插入表格"
+            onClick={() => {
+              this.selectionReplace(cmd.table);
+            }}
+            icon="table"
+          />
+          <Button
+            title="插入链接"
+            onClick={() => {
+              this.selectionReplace(cmd.link(this.getSelectValue()));
+            }}
+            icon="link"
+          />
+          <Upload {...props}>
+            <Button icon="picture" title="插入图片" />
+          </Upload>
+          <Button
+            title="撤销 Ctrl+Z"
+            onClick={() => {
+              this.prevHistory();
+            }}
+            disabled={history.currentIndex === 0}
+            icon="arrow-left"
+          />
+          <Button
+            title="重做 Ctrl+Y"
+            onClick={() => {
+              this.nextHistory();
+            }}
+            disabled={history.currentIndex === history.data.length - 1}
+            icon="arrow-right"
+          />
+        </ButtonGroup>
       </div>
-
     );
   }
   render() {

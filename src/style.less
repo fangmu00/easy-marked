@@ -1,3 +1,25 @@
+@font-face {
+  font-family: 'font1';  /* project id 540470 */
+  src: url('//at.alicdn.com/t/font_540470_fk9ocpz95351att9.eot');
+  src: url('//at.alicdn.com/t/font_540470_fk9ocpz95351att9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_540470_fk9ocpz95351att9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_540470_fk9ocpz95351att9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_540470_fk9ocpz95351att9.svg#iconfont') format('svg');
+}
+.markdown-edit-i{
+  font-family: 'font1';
+  font-size: 12px;
+  &.ulist{
+    &::before{
+      content: '\e67e';
+    }
+  }
+  &.olist{
+    &::before{
+      content: '\e645';
+    }
+  }
+}
 .markdown-edit{
   padding: 0 10px;
   .markdown-edit-actionbar{
@@ -5,12 +27,23 @@
     .ant-upload-list{
       display: none;
     }
-    button {
-      margin-right: 5px;
+    .ant-upload button{
+      border-radius: 0px;
+      margin-left: -1px;
+      margin-right: -1px;
+      &:hover{
+        z-index: 2;
+      }
+    }
+    .italic{
+      font-style: italic;
+    }
+    .deleteline{
+      text-decoration: line-through;
     }
   }
   .markdown-edit-view{
-    height: 370px;
+    height: 435px;
     overflow: auto;
     p {
       margin-bottom: 10px;

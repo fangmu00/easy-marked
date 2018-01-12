@@ -8,7 +8,7 @@ export const cmd = {
     };
   },
   table: {
-    text: '| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text     | Text     |',
+    text: '\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text     | Text     |',
     selectRange: [2, 10],
   },
   link: (name = '') => ({
@@ -25,6 +25,70 @@ export const cmd = {
   tab: {
     text: '  ',
     selectRange: [2, 2],
+  },
+  italic: (v = '') => {
+    const text = `_${v}_`;
+    const len = text.length - 1;
+    return {
+      text,
+      selectRange: [len, len],
+    };
+  },
+  ulist: (v = 'List') => {
+    const text = `* ${v}`;
+    const len = text.length;
+    return {
+      text,
+      selectRange: [2, len],
+    };
+  },
+  olist: (v = 'List') => {
+    const text = `1. ${v}`;
+    const len = text.length;
+    return {
+      text,
+      selectRange: [3, len],
+    };
+  },
+  h1: (v = '大标题') => {
+    const text = `# ${v}`;
+    const len = text.length;
+    return {
+      text,
+      selectRange: [2, len],
+    };
+  },
+  h2: (v = '中标题') => {
+    const text = `## ${v}`;
+    const len = text.length;
+    return {
+      text,
+      selectRange: [3, len],
+    };
+  },
+  h3: (v = '小标题') => {
+    const text = `### ${v}`;
+    const len = text.length;
+    return {
+      text,
+      selectRange: [4, len],
+    };
+  },
+  deleteline: (v = '') => {
+    const text = `~~${v}~~`;
+    const len = text.length - 2;
+    return {
+      text,
+      selectRange: [len, len],
+    };
+  },
+  bold: (v = '') => {
+    const text = `**${v}**`;
+    const len = text.length - 2;
+    return {
+      text,
+      selectRange: [len, len],
+    };
   },
 };
 
