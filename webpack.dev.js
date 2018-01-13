@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
 const { resolve } = path;
@@ -23,13 +24,14 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: [{
-          loader: 'style-loader',
-        }, {
-          loader: 'css-loader',
-        }, {
-          loader: 'less-loader',
-        }],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [{
+            loader: 'css-loader',
+          }, {
+            loader: 'less-loader',
+          }],
+        }),
       }],
   },
   resolve: {
@@ -46,9 +48,7 @@ module.exports = {
     'react-dom': 'var ReactDOM',
   },
   devtool: 'inline-source-map',
-  // plugins: [
-  //   new HtmlWebpackPlugin({
-  //     template: './index.html',
-  //   }),
-  // ],
+  plugins: [
+    new ExtractTextPlugin('styles.css'),
+  ],
 };

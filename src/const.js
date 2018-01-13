@@ -9,7 +9,7 @@ export const cmd = {
   },
   table: {
     text: '\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text     | Text     |',
-    selectRange: [2, 10],
+    selectRange: [2, 11],
   },
   link: (name = '') => ({
     text: `[${name}]()`,

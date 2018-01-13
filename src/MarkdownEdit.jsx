@@ -24,8 +24,7 @@ class MarkdownEdit extends React.Component {
 
   componentDidMount() {
     marked.setOptions(this.props.option);
-    this.view.innerHTML = marked(this.state.value);
-    this.textareaRef.addEventListener('keydown', this.handleKeyDown);
+    this.view.innerHTML = marked(this.state.value || '');
   }
 
   componentWillReceiveProps({ value }) {
@@ -39,15 +38,11 @@ class MarkdownEdit extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    this.textareaRef.removeEventListener('keydown', this.handleKeyDown);
-  }
-
   setHistory(value) {
     const { history } = this.state;
     history.data.push(value);
     history.currentIndex = history.data.length - 1;
-    this.props.onChange(value);
+    this.props.onChange(value, marked(value || ''));
   }
 
   getSelectValue() {
@@ -65,7 +60,7 @@ class MarkdownEdit extends React.Component {
         history,
       }, this.renderView);
     }
-    this.props.onChange(history.data[history.currentIndex]);
+    this.props.onChange(history.data[history.currentIndex], marked(history.data[history.currentIndex] || ''));
   }
 
   nextHistory() {
@@ -77,7 +72,7 @@ class MarkdownEdit extends React.Component {
         history,
       }, this.renderView);
     }
-    this.props.onChange(history.data[history.currentIndex]);
+    this.props.onChange(history.data[history.currentIndex], marked(history.data[history.currentIndex] || ''));
   }
 
   handleChange(e) {
@@ -89,13 +84,15 @@ class MarkdownEdit extends React.Component {
 
   handleKeyDown(e) {
     const { keyCode, ctrlKey } = e;
-    console.log(keyCode);
     if (keyCode === 90 && ctrlKey) {
       e.preventDefault();
       this.prevHistory();
-    } if (keyCode === 89 && ctrlKey) {
+    } else if (keyCode === 89 && ctrlKey) {
       e.preventDefault();
       this.nextHistory();
+    } else if (keyCode === 83 && ctrlKey) {
+      e.preventDefault();
+      this.props.onSave(this.state.value, marked(this.state.value || ''));
     } else if (keyCode === 9) {
       e.preventDefault();
       this.selectionReplace(cmd.tab);
@@ -134,16 +131,17 @@ class MarkdownEdit extends React.Component {
   renderButton() {
     const me = this;
     const { history } = me.state;
+    const { uploadAction, uploadName, afterUpload } = me.state;
     const props = {
-      name: 'file',
-      action: uploadRPC,
+      name: uploadName,
+      action: uploadAction,
       onChange(info) {
         if (info.file.status !== 'uploading') {
           console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
           message.success(`${info.file.name} file uploaded successfully`);
-          const imgCode = cmd.img(info.file.name, info.file.response.content.retValue.path);
+          const imgCode = cmd.img(info.file.name, afterUpload(info.file.response));
           me.selectionReplace(imgCode);
         } else if (info.file.status === 'error') {
           message.error(`${info.file.name} file upload failed.`);
@@ -268,19 +266,22 @@ class MarkdownEdit extends React.Component {
     );
   }
   render() {
+    const { placeholder, className } = this.props;
+    const { value } = this.state;
     return (
-      <div className="markdown-edit">
+      <div className={`markdown-edit ${className}`}>
         <Row gutter={16}>
           {
             this.renderButton()
           }
           <Col span={12}>
             <TextArea
-              placeholder={this.props.placeholder}
+              placeholder={placeholder}
               onChange={this.handleChange}
               onScroll={this.handleScroll}
-              value={this.state.value}
-              autosize={{ minRows: 20, maxRows: 20 }}
+              onKeyDown={this.handleKeyDown}
+              value={value}
+              className="markdown-edit-text"
               ref={(c) => { if (c) { this.textareaRef = c.textAreaRef; } }}
             />
           </Col>
@@ -295,21 +296,27 @@ class MarkdownEdit extends React.Component {
 }
 
 MarkdownEdit.defaultProps = {
-  option: {
-    gfm: true,
-    breaks: true,
-    smartypants: true,
-  },
-  placeholder: '',
-  value: '# Marked in browser\n\nRendered by **marked**.',
+  option: {},
+  uploadAction: '',
+  uploadName: 'file',
+  afterUpload: data => data,
+  placeholder: '请输入',
+  className: '',
+  value: '',
   onChange: () => {},
+  onSave: () => {},
 };
 
 MarkdownEdit.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.string,
+  className: PropTypes.string,
   placeholder: PropTypes.string,
   option: PropTypes.objectOf(PropTypes.any),
+  uploadAction: PropTypes.string,
+  uploadName: PropTypes.string,
+  afterUpload: PropTypes.func,
+  onSave: PropTypes.func,
 };
 
 export default MarkdownEdit;
