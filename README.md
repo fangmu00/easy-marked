@@ -1,6 +1,8 @@
 # easy-marked
 简单实用的markdown(antd风格)编辑器
 
+
+[![npm](https://img.shields.io/npm/v/easy-marked.svg?style=flat)]()
 ## 安装
 ```
  npm install --save easy-marked
@@ -39,5 +41,6 @@ ReactDOM.render(
 | className    | 自定义样式容器 | string   | ''       |
 | uploadAction    | 图片上传地址 | string   | ''       |
 | uploadName    | 图片上传字段 | string   | ''       |
+| afterUpload    | 图片上传服务端返回的数据，返回图片地址 | function(data)   | 无      |
 | option    | marked配置 基于[marked](https://github.com/chjj/marked) | object   | 无 |
 
