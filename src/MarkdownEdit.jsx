@@ -211,7 +211,7 @@ class MarkdownEdit extends React.Component {
               this.selectionReplace(cmd.ulist());
             }}
           >
-            <span className="markdown-edit-i ulist" />
+            <span className="markdown-edit-i olist" />
           </Button>
           <Button
             title="有序列"
@@ -219,7 +219,7 @@ class MarkdownEdit extends React.Component {
               this.selectionReplace(cmd.olist());
             }}
           >
-            <span className="markdown-edit-i olist" />
+            <span className="markdown-edit-i ulist" />
           </Button>
           <Button
             title="插入代码"
