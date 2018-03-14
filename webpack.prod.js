@@ -7,6 +7,7 @@ const { resolve } = path;
 module.exports = {
   context: resolve(__dirname, './'),
   entry: {
+    demo: './demo/index.jsx',
     index: './src/index.js',
   },
   output: {
