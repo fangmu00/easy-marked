@@ -20,7 +20,6 @@
   "license": "ISC",
   "dependencies": {
     "antd": "^3.1.1",
-    "easy-marked": "^1.0.1",
     "marked": "^0.3.12",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
