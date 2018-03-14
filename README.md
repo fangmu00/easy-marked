@@ -8,6 +8,8 @@
  npm install --save easy-marked
 ```
 
+## demo
+[https://fangmu00.github.io/easy-marked](https://fangmu00.github.io/easy-marked)
 ## 使用
 ```
 import React from 'react';

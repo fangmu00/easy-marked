@@ -132,7 +132,7 @@ class MarkdownEdit extends React.Component {
   renderButton() {
     const me = this;
     const { history } = me.state;
-    const { uploadAction, uploadName, afterUpload } = me.state;
+    const { uploadAction, uploadName, afterUpload } = me.props;
     const props = {
       name: uploadName,
       action: uploadAction,
