@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import marked from 'marked';
 import { Input, Row, Col, Upload, Button, message, Icon, Dropdown, Menu } from 'antd';
-import { cmd, uploadRPC } from './const';
+import { cmd } from './const';
 import './style.less';
 
 const { TextArea } = Input;

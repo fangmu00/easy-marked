@@ -1,6 +1,6 @@
 {
   "name": "easy-marked",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "markdown edit",
   "main": "dist/index.js",
   "repository": {
@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "antd": "^3.1.1",
+    "easy-marked": "^1.0.1",
     "marked": "^0.3.12",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",

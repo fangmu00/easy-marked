@@ -7,10 +7,10 @@ const { resolve } = path;
 module.exports = {
   context: resolve(__dirname, './'),
   entry: {
-    demo: './demo/index.jsx',
-    index: './index.js',
+    index: './src/index.js',
   },
   output: {
+    libraryTarget: 'umd',
     path: path.join(__dirname, './dist/'),
     filename: '[name].js',
     publicPath: '/',
@@ -18,7 +18,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         use: ['babel-loader'],
         exclude: /node_modules/,
       },
@@ -36,6 +36,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
+    mainFields: ['main'],
   },
   externals: {
     react: 'var React',

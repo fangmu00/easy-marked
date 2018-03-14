@@ -8,7 +8,7 @@ module.exports = {
   context: resolve(__dirname, './'),
   entry: {
     demo: './demo/index.jsx',
-    index: './index.js',
+    index: './src/index.js',
   },
   output: {
     path: path.join(__dirname, './dist/'),
@@ -18,7 +18,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)$/,
         use: ['babel-loader'],
         exclude: /node_modules/,
       },
@@ -40,6 +40,7 @@ module.exports = {
   devServer: {
     contentBase: resolve(__dirname, './'),
     // 输出文件的路径
+    host: '127.0.0.1',
     publicPath: '/dist/',
     // 和上文 output 的“publicPath”值保持一致
   },
